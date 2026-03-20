@@ -36,58 +36,92 @@ header{background:rgba(247,251,250,.92);backdrop-filter:blur(10px);border-bottom
 .intro-desc{font-size:12px;color:var(--text-muted);line-height:1.7;}
 .card{background:var(--surface);border-radius:16px;padding:18px 16px;box-shadow:var(--shadow);border:1px solid var(--border);margin-bottom:12px;}
 .card-title{font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--mint-mid);margin-bottom:14px;display:flex;align-items:center;gap:6px;}
-.upload-area{border:2px dashed var(--mint-soft);border-radius:12px;padding:24px 16px;text-align:center;cursor:pointer;transition:all .2s;background:linear-gradient(135deg,var(--mint-pale),var(--mint-wash));}
-.upload-area:active{border-color:var(--mint-deep);background:var(--mint-pale);}
-.upload-area.has-photos{border-style:solid;border-color:var(--mint-mid);}
-.upload-icon{font-size:28px;margin-bottom:6px;}
-.upload-text{font-size:12px;color:var(--text-soft);}
-.upload-text strong{color:var(--mint-deep);}
-.upload-limit{font-size:11px;color:var(--text-muted);margin-top:4px;}
-input[type=file]{display:none;}
-.photos-preview{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px;}
-.photo-thumb{width:68px;height:68px;border-radius:10px;object-fit:cover;border:2px solid var(--mint-soft);}
-.auto-info{background:var(--mint-pale);border-radius:8px;padding:8px 12px;margin-top:10px;display:none;border:1px solid var(--mint-soft);}
-.auto-info.show{display:block;}
-.auto-info-text{font-size:11px;color:var(--mint-deep);}
+
+/* 사진 3칸 */
+.photo-slots{display:flex;gap:8px;}
+.photo-slot{flex:1;display:flex;flex-direction:column;gap:6px;}
+.photo-slot-label{font-size:10px;font-weight:700;color:var(–mint-deep);text-align:center;line-height:1.3;}
+.photo-slot-sub{font-size:9px;color:var(–text-muted);text-align:center;line-height:1.3;margin-top:-2px;}
+.photo-slot-area{
+aspect-ratio:1;
+border:2px dashed var(–mint-soft);
+border-radius:10px;
+background:linear-gradient(135deg,var(–mint-pale),var(–mint-wash));
+display:flex;align-items:center;justify-content:center;
+cursor:pointer;
+overflow:hidden;
+transition:all .2s;
+position:relative;
+}
+.photo-slot-area:active{border-color:var(–mint-deep);}
+.photo-slot-area.filled{border-style:solid;border-color:var(–mint-mid);}
+.photo-slot-area img{width:100%;height:100%;object-fit:cover;}
+.photo-slot-empty{font-size:22px;color:var(–mint-light);}
+.photo-slot-area input[type=file]{display:none;}
+
+/* 날짜 */
+.date-label{display:block;position:relative;cursor:pointer;}
+.date-input-real{position:absolute;top:0;left:0;width:100%;height:100%;opacity:0;cursor:pointer;z-index:2;}
+.date-display{
+width:100%;
+border:1px solid var(–border);
+border-radius:10px;
+padding:10px 14px;
+font-size:14px;
+font-family:‘Noto Sans KR’,sans-serif;
+background:var(–mint-wash);
+display:flex;align-items:center;justify-content:space-between;
+color:var(–text-muted);
+transition:border .15s;
+}
+.date-display.has-value{color:var(–text);border-color:var(–mint-mid);}
+
 .form-group{margin-bottom:14px;}
 .form-group:last-child{margin-bottom:0;}
-.form-label{font-size:11px;font-weight:700;color:var(--text-soft);margin-bottom:6px;display:block;}
-
-/* 날짜 - label로 감싸서 클릭 확실하게 */
-.date-label{display:block;position:relative;}
-.date-input-real{position:absolute;top:0;left:0;width:100%;height:100%;opacity:0;cursor:pointer;z-index:2;}
-.date-display{width:100%;border:1px solid var(–border);border-radius:10px;padding:10px 14px;font-size:14px;font-family:‘Noto Sans KR’,sans-serif;background:var(–mint-wash);display:flex;align-items:center;justify-content:space-between;color:var(–text-muted);}
-.date-display.has-value{color:var(–text);}
-
+.form-label{font-size:11px;font-weight:700;color:var(–text-soft);margin-bottom:6px;display:block;}
 .form-input{width:100%;border:1px solid var(–border);border-radius:10px;padding:10px 14px;font-size:14px;font-family:‘Noto Sans KR’,sans-serif;color:var(–text);background:var(–mint-wash);outline:none;transition:all .15s;-webkit-appearance:none;appearance:none;}
 .form-input:focus{border-color:var(–mint-mid);background:#fff;box-shadow:0 0 0 3px rgba(122,181,165,.12);}
 textarea.form-input{resize:none;height:68px;line-height:1.5;}
 
-/* 무드 버튼 - 터치 확실하게 */
+/* 무드 버튼 — 기본 민트, 선택시 회색 */
 .tone-options{display:grid;grid-template-columns:repeat(3,1fr);gap:7px;}
 .tone-btn{
 padding:10px 4px;
 border-radius:12px;
-border:1px solid var(–border);
+border:1px solid var(–mint-soft);
 font-size:11px;font-weight:500;
-background:var(–surface2);
-color:var(–text-soft);
+background:var(–mint-pale);
+color:var(–mint-deep);
 font-family:‘Noto Sans KR’,sans-serif;
-text-align:center;
-line-height:1.4;
+text-align:center;line-height:1.4;
 cursor:pointer;
--webkit-tap-highlight-color:rgba(74,140,122,.2);
-transition:background .15s, color .15s, border-color .15s;
+-webkit-tap-highlight-color:rgba(0,0,0,.05);
+transition:background .15s,color .15s,border-color .15s;
 user-select:none;
-display:block;
-width:100%;
+display:block;width:100%;
 }
-.tone-btn.active{background:var(–mint-deep);color:#fff;border-color:var(–mint-deep);box-shadow:0 2px 8px rgba(74,140,122,.25);}
+.tone-btn.active{
+background:#c0c0c0;
+color:#fff;
+border-color:#b0b0b0;
+box-shadow:0 2px 6px rgba(0,0,0,.1);
+}
 
 .divider{display:flex;align-items:center;gap:10px;margin:4px 0 14px;color:var(–text-muted);font-size:11px;}
 .divider::before,.divider::after{content:’’;flex:1;height:1px;background:var(–border);}
-.generate-btn{width:100%;padding:15px;border-radius:14px;border:none;background:linear-gradient(135deg,var(–mint-deep),var(–mint-mid));color:#fff;font-size:15px;font-weight:700;font-family:‘Noto Sans KR’,sans-serif;cursor:pointer;transition:all .2s;margin-bottom:20px;box-shadow:0 4px 16px rgba(74,140,122,.3);}
+
+/* 생성 버튼 */
+.generate-btn{
+width:100%;padding:15px;border-radius:14px;border:none;
+background:linear-gradient(135deg,var(–mint-deep),var(–mint-mid));
+color:#fff;font-size:15px;font-weight:700;
+font-family:‘Noto Sans KR’,sans-serif;
+cursor:pointer;transition:all .2s;margin-bottom:20px;
+box-shadow:0 4px 16px rgba(74,140,122,.3);
+}
 .generate-btn:disabled{background:var(–mint-soft);box-shadow:none;}
+
+/* 결과 */
 .result-section{background:var(–surface);border-radius:16px;padding:22px 18px;box-shadow:var(–shadow);border:1px solid var(–border);display:none;}
 .result-section.show{display:block;animation:fadeUp .4s ease;}
 @keyframes fadeUp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
@@ -96,6 +130,8 @@ width:100%;
 .copy-btn{padding:5px 12px;border-radius:6px;border:1px solid var(–mint-soft);background:var(–mint-pale);color:var(–mint-deep);font-size:11px;font-weight:700;cursor:pointer;font-family:‘Noto Sans KR’,sans-serif;}
 .result-text{font-family:‘Gowun Batang’,serif;font-size:15px;line-height:2;color:var(–text);white-space:pre-wrap;}
 .result-date{font-size:11px;color:var(–text-muted);margin-top:14px;text-align:right;font-style:italic;}
+
+/* 로딩 */
 .loading-overlay{display:none;position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(247,244,239,.92);backdrop-filter:blur(4px);z-index:100;flex-direction:column;align-items:center;justify-content:center;gap:16px;}
 .loading-overlay.show{display:flex;}
 .loading-emoji{font-size:40px;animation:pulse 1.5s ease-in-out infinite;}
@@ -111,25 +147,42 @@ width:100%;
   <div class="ai-badge">✨ AI 작성</div>
 </header>
 <div class="main">
+
   <div class="intro">
     <span class="intro-emoji">👶</span>
     <div class="intro-title">오늘 하루를 기록해요</div>
     <div class="intro-desc">사진과 몇 가지 메모만 있으면<br>AI가 따뜻한 육아일기를 써드려요</div>
   </div>
 
-  <!-- 사진 -->
+  <!-- 사진 3칸 -->
 
   <div class="card">
     <div class="card-title">📸 오늘의 사진</div>
-    <div class="upload-area" id="uploadArea" onclick="document.getElementById('photoInput').click()">
-      <div class="upload-icon">🖼️</div>
-      <div class="upload-text">사진을 눌러서 선택해요<br><strong>최대 4장까지 선택 가능해요</strong></div>
-      <div class="upload-limit">4장을 초과하면 처음 4장만 사용돼요</div>
-    </div>
-    <input type="file" id="photoInput" accept="image/*" multiple>
-    <div class="photos-preview" id="photosPreview"></div>
-    <div class="auto-info" id="autoInfo">
-      <div class="auto-info-text" id="autoInfoText"></div>
+    <div class="photo-slots">
+      <div class="photo-slot">
+        <div class="photo-slot-label">오늘의 시작</div>
+        <div class="photo-slot-sub">하루의 첫 페이지</div>
+        <div class="photo-slot-area" id="slot0" onclick="document.getElementById('photo0').click()">
+          <span class="photo-slot-empty">+</span>
+          <input type="file" id="photo0" accept="image/*">
+        </div>
+      </div>
+      <div class="photo-slot">
+        <div class="photo-slot-label">오늘의 하이라이트</div>
+        <div class="photo-slot-sub">가장 빛났던 순간</div>
+        <div class="photo-slot-area" id="slot1" onclick="document.getElementById('photo1').click()">
+          <span class="photo-slot-empty">+</span>
+          <input type="file" id="photo1" accept="image/*">
+        </div>
+      </div>
+      <div class="photo-slot">
+        <div class="photo-slot-label">오늘의 마무리</div>
+        <div class="photo-slot-sub">하루를 마치며</div>
+        <div class="photo-slot-area" id="slot2" onclick="document.getElementById('photo2').click()">
+          <span class="photo-slot-empty">+</span>
+          <input type="file" id="photo2" accept="image/*">
+        </div>
+      </div>
     </div>
   </div>
 
@@ -142,7 +195,8 @@ width:100%;
       <label class="date-label">
         <input type="date" class="date-input-real" id="diaryDate">
         <div class="date-display" id="dateDisplay">
-          <span id="dateTxt">클릭해서 날짜를 선택해요 📅</span>
+          <span id="dateTxt">클릭해서 날짜를 선택해요</span>
+          <span>📅</span>
         </div>
       </label>
     </div>
@@ -201,80 +255,36 @@ width:100%;
 
 <script>
 var WORKER_URL = "https://diary-ai.byungkuen.workers.dev";
-var photoBase64List = [];
+var photoBase64List = [null, null, null];
 var selectedTones = ["따뜻하고 포근하게"];
 
-// 날짜 변경
+// 날짜
 document.getElementById('diaryDate').addEventListener('change', function() {
   var val = this.value;
   var display = document.getElementById('dateDisplay');
   var txt = document.getElementById('dateTxt');
   if(val) {
-    txt.textContent = val.replace(/-/g, '.') + ' 📅';
+    txt.textContent = val.replace(/-/g, '.');
     display.classList.add('has-value');
   } else {
-    txt.textContent = '클릭해서 날짜를 선택해요 📅';
+    txt.textContent = '클릭해서 날짜를 선택해요';
     display.classList.remove('has-value');
   }
 });
 
-// 무드 버튼
-var toneOptions = document.getElementById('toneOptions') || document.querySelector('.tone-options');
-document.querySelector('.tone-options').addEventListener('touchend', function(e) {
-  e.preventDefault();
-  var btn = e.target.closest('.tone-btn');
-  if(!btn) return;
-  handleTone(btn);
-});
-document.querySelector('.tone-options').addEventListener('click', function(e) {
-  var btn = e.target.closest('.tone-btn');
-  if(!btn) return;
-  handleTone(btn);
-});
-
-function handleTone(btn) {
-  var tone = btn.getAttribute('data-tone');
-  var idx = selectedTones.indexOf(tone);
-  if(idx > -1) {
-    if(selectedTones.length > 1) {
-      selectedTones.splice(idx, 1);
-      btn.classList.remove('active');
-    }
-  } else {
-    if(selectedTones.length >= 2) {
-      var firstTone = selectedTones.shift();
-      document.querySelectorAll('.tone-btn').forEach(function(b) {
-        if(b.getAttribute('data-tone') === firstTone) b.classList.remove('active');
-      });
-    }
-    selectedTones.push(tone);
-    btn.classList.add('active');
-  }
-}
-
-// 사진 업로드
-document.getElementById('photoInput').addEventListener('change', function() {
-  var files = Array.from(this.files).slice(0, 4);
-  if(!files.length) return;
-  var preview = document.getElementById('photosPreview');
-  var uploadArea = document.getElementById('uploadArea');
-  preview.innerHTML = '';
-  photoBase64List = [];
-  uploadArea.classList.add('has-photos');
-  var total = Array.from(this.files).length;
-  files.forEach(function(f, i) {
-    fileToBase64(f).then(function(b64) {
-      photoBase64List.push(b64);
-      var img = document.createElement('img');
-      img.className = 'photo-thumb';
-      img.src = b64;
-      preview.appendChild(img);
-      if(i === 0) tryExtractDate(f);
+// 사진 3칸
+[0,1,2].forEach(function(i) {
+  document.getElementById('photo' + i).addEventListener('change', function() {
+    var file = this.files[0];
+    if(!file) return;
+    fileToBase64(file).then(function(b64) {
+      photoBase64List[i] = b64;
+      var slot = document.getElementById('slot' + i);
+      slot.classList.add('filled');
+      slot.innerHTML = '<img src="' + b64 + '">';
+      if(i === 0) tryExtractDate(file);
     });
   });
-  document.getElementById('autoInfo').classList.add('show');
-  document.getElementById('autoInfoText').textContent =
-    total > 4 ? '📷 사진 4장 선택됐어요 (' + total + '장 중 처음 4장)' : '📷 사진 ' + files.length + '장이 선택됐어요';
 });
 
 function fileToBase64(file) {
@@ -305,15 +315,46 @@ function tryExtractDate(file) {
   var s = d.toISOString().split('T')[0];
   if(s) {
     document.getElementById('diaryDate').value = s;
-    document.getElementById('dateTxt').textContent = s.replace(/-/g, '.') + ' 📅';
+    document.getElementById('dateTxt').textContent = s.replace(/-/g, '.');
     document.getElementById('dateDisplay').classList.add('has-value');
-    document.getElementById('autoInfoText').textContent = '📷 사진 촬영일 ' + s.replace(/-/g, '.') + ' 자동 입력됐어요';
   }
 }
 
-// 생성 버튼
+// 무드 버튼
+document.querySelector('.tone-options').addEventListener('touchend', function(e) {
+  e.preventDefault();
+  var btn = e.target.closest('.tone-btn');
+  if(btn) handleTone(btn);
+});
+document.querySelector('.tone-options').addEventListener('click', function(e) {
+  var btn = e.target.closest('.tone-btn');
+  if(btn) handleTone(btn);
+});
+
+function handleTone(btn) {
+  var tone = btn.getAttribute('data-tone');
+  var idx = selectedTones.indexOf(tone);
+  if(idx > -1) {
+    if(selectedTones.length > 1) {
+      selectedTones.splice(idx, 1);
+      btn.classList.remove('active');
+    }
+  } else {
+    if(selectedTones.length >= 2) {
+      var firstTone = selectedTones.shift();
+      document.querySelectorAll('.tone-btn').forEach(function(b) {
+        if(b.getAttribute('data-tone') === firstTone) b.classList.remove('active');
+      });
+    }
+    selectedTones.push(tone);
+    btn.classList.add('active');
+  }
+}
+
+// 생성
 document.getElementById('generateBtn').addEventListener('click', function() {
-  if(!photoBase64List.length) { alert('사진을 먼저 선택해주세요! 📸'); return; }
+  var validPhotos = photoBase64List.filter(function(p) { return p !== null; });
+  if(!validPhotos.length) { alert('사진을 최소 1장 선택해주세요! 📸'); return; }
   var place = document.getElementById('diaryPlace').value;
   var event = document.getElementById('diaryEvent').value;
   if(!place && !event) { alert('장소나 하이라이트를 입력해주세요!'); return; }
@@ -323,17 +364,19 @@ document.getElementById('generateBtn').addEventListener('click', function() {
   document.getElementById('loadingOverlay').classList.add('show');
   document.getElementById('generateBtn').disabled = true;
 
+  var photoLabels = ['하루의 첫 페이지', '가장 빛났던 순간', '하루를 마치며'];
   var prompt = '아이와 함께한 하루를 육아일기로 써줘.\n\n' +
     '날짜: ' + (date || '미입력') + '\n' +
     '장소: ' + (place || '미입력') + '\n' +
     '오늘의 하이라이트: ' + (event || '미입력') + '\n' +
     '톤: ' + selectedTones.join(', ') + '\n' +
     (exclude ? '빼고 싶은 것: ' + exclude + '\n' : '') +
-    '\n첨부된 사진들을 보고 아이의 표정, 행동, 분위기를 자세히 묘사해줘.\n' +
+    '\n사진은 순서대로 [' + photoLabels.slice(0, validPhotos.length).join(', ') + '] 순간이야.\n' +
+    '각 사진의 아이 표정, 행동, 분위기를 묘사하고 스토리라인으로 연결해줘.\n' +
     selectedTones.join(', ') + ' 톤으로 400자 내외로 써줘.\n' +
     '감동적인 제목도 붙여줘.\n마지막에 오늘 하루를 한 문장으로 요약해줘.';
 
-  var imgs = photoBase64List.map(function(b64) {
+  var imgs = validPhotos.map(function(b64) {
     var mt = b64.split(';')[0].split(':')[1];
     return { type: "image", source: { type: "base64", media_type: mt, data: b64.split(',')[1] } };
   });
