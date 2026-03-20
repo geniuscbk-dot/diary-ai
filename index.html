@@ -46,7 +46,7 @@ header{
 .logo-sub{font-size:10px;color:var(--text-muted);margin-left:6px;}
 .ai-badge{font-size:10px;font-weight:700;color:var(--mint-deep);background:var(--mint-pale);border:1px solid var(--mint-soft);padding:3px 10px;border-radius:20px;}
 .main{padding:20px 16px 40px;max-width:480px;margin:0 auto;}
-.intro{text-align:center;padding:16px 0 22px;background:#fff;border-radius:16px;margin-bottom:12px;border:1px solid var(--border);box-shadow:var(--shadow);}
+.intro{text-align:center;padding:20px 16px 22px;background:#fff;border-radius:16px;margin-bottom:12px;border:1px solid var(--border);box-shadow:var(--shadow);}
 .intro-emoji{font-size:36px;margin-bottom:10px;display:block;animation:float 3s ease-in-out infinite;}
 @keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
 .intro-title{font-family:'Gowun Batang',serif;font-size:20px;color:var(--text);margin-bottom:5px;}
@@ -59,6 +59,7 @@ header{
 .upload-icon{font-size:28px;margin-bottom:6px;}
 .upload-text{font-size:12px;color:var(--text-soft);}
 .upload-text strong{color:var(--mint-deep);}
+.upload-limit{font-size:11px;color:var(--text-muted);margin-top:4px;}
 input[type=file]{display:none;}
 .photos-preview{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px;}
 .photo-thumb{width:68px;height:68px;border-radius:10px;object-fit:cover;border:2px solid var(--mint-soft);box-shadow:0 2px 8px rgba(74,140,122,.1);}
@@ -72,7 +73,8 @@ input[type=file]{display:none;}
 input[type=date]{color-scheme:light;}
 .form-input:focus{border-color:var(--mint-mid);background:#fff;box-shadow:0 0 0 3px rgba(122,181,165,.12);}
 textarea.form-input{resize:none;height:68px;line-height:1.5;}
-.tone-options{display:flex;gap:7px;flex-wrap:wrap;}
+.tone-options{display:grid;grid-template-columns:repeat(3,1fr);gap:7px;}
+.tone-btn{text-align:center;}
 .tone-btn{padding:7px 13px;border-radius:20px;border:1px solid var(--border);font-size:12px;font-weight:500;cursor:pointer;background:var(--surface2);color:var(--text-soft);transition:all .15s;font-family:'Noto Sans KR',sans-serif;}
 .tone-btn.active{background:var(--mint-deep);color:#fff;border-color:var(--mint-deep);box-shadow:0 2px 8px rgba(74,140,122,.25);}
 .divider{display:flex;align-items:center;gap:10px;margin:4px 0 14px;color:var(--text-muted);font-size:11px;}
@@ -112,7 +114,8 @@ textarea.form-input{resize:none;height:68px;line-height:1.5;}
     <div class="card-title">📸 오늘의 사진</div>
     <div class="upload-area" id="uploadArea" onclick="document.getElementById('photoInput').click()">
       <div class="upload-icon">🖼️</div>
-      <div class="upload-text">사진을 눌러서 선택해요<br><strong>여러 장 선택 가능해요</strong></div>
+      <div class="upload-text">사진을 눌러서 선택해요<br><strong>최대 4장까지 선택 가능해요</strong></div>
+      <div class="upload-limit">4장을 초과하면 처음 4장만 사용돼요</div>
     </div>
     <input type="file" id="photoInput" accept="image/*" multiple onchange="handlePhotos(this)">
     <div class="photos-preview" id="photosPreview"></div>
@@ -138,12 +141,17 @@ textarea.form-input{resize:none;height:68px;line-height:1.5;}
   <div class="card">
     <div class="card-title">🎨 일기 스타일</div>
     <div class="form-group">
-      <label class="form-label">오늘의 무드</label>
+      <label class="form-label">오늘의 무드 <span style="color:var(--text-muted);font-weight:400">(최대 2개)</span></label>
       <div class="tone-options">
-        <button class="tone-btn active" onclick="setTone(this,'따뜻하고 포근하게')">🌸 따뜻하게</button>
-        <button class="tone-btn" onclick="setTone(this,'유머러스하고 재미있게')">😄 재미있게</button>
-        <button class="tone-btn" onclick="setTone(this,'감성적이고 시적으로')">🌙 감성적으로</button>
-        <button class="tone-btn" onclick="setTone(this,'짧고 간결하게')">✏️ 간결하게</button>
+        <button class="tone-btn active" data-tone="따뜻하고 포근하게" onclick="setTone(this,'따뜻하고 포근하게')">🌸 따뜻하게</button>
+        <button class="tone-btn" data-tone="유머러스하고 재미있게" onclick="setTone(this,'유머러스하고 재미있게')">😄 재미있게</button>
+        <button class="tone-btn" data-tone="감성적이고 시적으로" onclick="setTone(this,'감성적이고 시적으로')">🌙 감성적으로</button>
+        <button class="tone-btn" data-tone="짧고 간결하게" onclick="setTone(this,'짧고 간결하게')">✏️ 간결하게</button>
+        <button class="tone-btn" data-tone="뭉클하고 눈물나게" onclick="setTone(this,'뭉클하고 눈물나게')">🥹 뭉클하게</button>
+        <button class="tone-btn" data-tone="잔잔하고 평화롭게" onclick="setTone(this,'잔잔하고 평화롭게')">🌿 잔잔하게</button>
+        <button class="tone-btn" data-tone="쿨하고 담백하게" onclick="setTone(this,'쿨하고 담백하게')">😎 쿨하게</button>
+        <button class="tone-btn" data-tone="동화처럼 신비롭게" onclick="setTone(this,'동화처럼 신비롭게')">📖 동화처럼</button>
+        <button class="tone-btn" data-tone="편지처럼 다정하게" onclick="setTone(this,'편지처럼 다정하게')">💌 편지처럼</button>
       </div>
     </div>
     <div class="divider">선택사항</div>
@@ -169,83 +177,152 @@ textarea.form-input{resize:none;height:68px;line-height:1.5;}
 </div>
 <script>
 const WORKER_URL = "https://diary-ai.byungkuen.workers.dev";
-let selectedTone = "따뜻하고 포근하게";
 let photoBase64List = [];
-document.getElementById('diaryDate').value = new Date().toISOString().split('T')[0];
-function setTone(btn,tone){document.querySelectorAll('.tone-btn').forEach(b=>b.classList.remove('active'));btn.classList.add('active');selectedTone=tone;}
+
+document.getElementById(‘diaryDate’).value = new Date().toISOString().split(‘T’)[0];
+
+let selectedTones = [“따뜻하고 포근하게”];
+
+function setTone(btn, tone){
+const idx = selectedTones.indexOf(tone);
+if(idx > -1){
+// 이미 선택된 거 → 해제 (최소 1개는 유지)
+if(selectedTones.length > 1){
+selectedTones.splice(idx, 1);
+btn.classList.remove(‘active’);
+}
+} else {
+if(selectedTones.length >= 2){
+// 2개 이미 선택됨 → 첫 번째 해제
+const firstTone = selectedTones.shift();
+document.querySelectorAll(’.tone-btn’).forEach(b=>{
+if(b.getAttribute(‘data-tone’) === firstTone) b.classList.remove(‘active’);
+});
+}
+selectedTones.push(tone);
+btn.classList.add(‘active’);
+}
+}
+
 async function handlePhotos(input){
-  const files=Array.from(input.files);
-  if(!files.length)return;
-  const preview=document.getElementById('photosPreview');
-  const uploadArea=document.getElementById('uploadArea');
-  preview.innerHTML='';photoBase64List=[];
-  uploadArea.classList.add('has-photos');
-  for(var f of files){
-    const b64=await fileToBase64(f);
-    photoBase64List.push(b64);
-    const img=document.createElement('img');
-    img.className='photo-thumb';img.src=b64;
-    preview.appendChild(img);
-    tryExtractDate(f);
-  }
-  document.getElementById('autoInfo').classList.add('show');
-  document.getElementById('autoInfoText').textContent=`📷 사진 ${files.length}장이 선택됐어요`;
+const files = Array.from(input.files).slice(0, 4);
+if(!files.length) return;
+const preview = document.getElementById(‘photosPreview’);
+const uploadArea = document.getElementById(‘uploadArea’);
+preview.innerHTML = ‘’;
+photoBase64List = [];
+uploadArea.classList.add(‘has-photos’);
+for(var f of files){
+const b64 = await fileToBase64(f);
+photoBase64List.push(b64);
+const img = document.createElement(‘img’);
+img.className = ‘photo-thumb’;
+img.src = b64;
+preview.appendChild(img);
+tryExtractDate(f);
 }
+document.getElementById(‘autoInfo’).classList.add(‘show’);
+const msg = files.length === 4 && Array.from(input.files).length > 4
+? `📷 사진 4장 선택됐어요 (${Array.from(input.files).length}장 중 처음 4장)`
+: `📷 사진 ${files.length}장이 선택됐어요`;
+document.getElementById(‘autoInfoText’).textContent = msg;
+}
+
 function fileToBase64(file){
-  return new Promise(function(resolve){
-    const img = new Image();
-    const reader = new FileReader();
-    reader.onload = function(e){
-      img.onload = function(){
-        const canvas = document.createElement('canvas');
-        const maxSize = 1024;
-        let w = img.width, h = img.height;
-        if(w > maxSize || h > maxSize){
-          if(w > h){ h = Math.round(h * maxSize / w); w = maxSize; }
-          else { w = Math.round(w * maxSize / h); h = maxSize; }
-        }
-        canvas.width = w; canvas.height = h;
-        canvas.getContext('2d').drawImage(img, 0, 0, w, h);
-        resolve(canvas.toDataURL('image/jpeg', 0.7));
-      };
-      img.src = e.target.result;
-    };
-    reader.readAsDataURL(file);
-  });
+return new Promise(function(resolve){
+const img = new Image();
+const reader = new FileReader();
+reader.onload = function(e){
+img.onload = function(){
+const canvas = document.createElement(‘canvas’);
+const maxSize = 1024;
+let w = img.width, h = img.height;
+if(w > maxSize || h > maxSize){
+if(w > h){ h = Math.round(h * maxSize / w); w = maxSize; }
+else { w = Math.round(w * maxSize / h); h = maxSize; }
 }
+canvas.width = w; canvas.height = h;
+canvas.getContext(‘2d’).drawImage(img, 0, 0, w, h);
+resolve(canvas.toDataURL(‘image/jpeg’, 0.7));
+};
+img.src = e.target.result;
+};
+reader.readAsDataURL(file);
+});
+}
+
 function tryExtractDate(file){
-  const d=new Date(file.lastModified);
-  const s=d.toISOString().split('T')[0];
-  if(s){document.getElementById('diaryDate').value=s;document.getElementById('autoInfoText').textContent=`📷 사진 촬영일 ${s.replace(/-/g,'.')} 자동 입력됐어요`;}
+const d = new Date(file.lastModified);
+const s = d.toISOString().split(‘T’)[0];
+if(s){
+document.getElementById(‘diaryDate’).value = s;
+document.getElementById(‘autoInfoText’).textContent = `📷 사진 촬영일 ${s.replace(/-/g,'.')} 자동 입력됐어요`;
 }
+}
+
 async function generateDiary(){
-  if(!photoBase64List.length){alert('사진을 먼저 선택해주세요! 📸');return;}
-  const place=document.getElementById('diaryPlace').value;
-  const event=document.getElementById('diaryEvent').value;
-  if(!place&&!event){alert('장소나 하이라이트를 입력해주세요!');return;}
-  const date=document.getElementById('diaryDate').value;
-  const exclude=document.getElementById('diaryExclude').value;
-  document.getElementById('loadingOverlay').classList.add('show');
-  document.getElementById('generateBtn').disabled=true;
-  try{
-    const prompt=`아이와 함께한 하루를 육아일기로 써줘.\n\n날짜: ${date}\n장소: ${place||'미입력'}\n오늘의 하이라이트: ${event||'미입력'}\n톤: ${selectedTone}\n${exclude?'빼고 싶은 것: '+exclude:''}\n\n첨부된 사진들을 보고 아이의 표정, 행동, 분위기를 자세히 묘사해줘.\n${selectedTone} 톤으로 400자 내외로 써줘.\n감동적인 제목도 붙여줘.\n마지막에 오늘 하루를 한 문장으로 요약해줘.`;
-    const imgs=photoBase64List.map(function(b64){const mt=b64.split(';')[0].split(':')[1];return{type:"image",source:{type:"base64",media_type:mt,data:b64.split(',')[1]}};});
-    const messages=[{role:"user",content:[...imgs,{type:"text",text:prompt}]}];
-    const res=await fetch(`${WORKER_URL}/?type=diary`,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({messages:messages})});
-    const data=await res.json();
-    const diary=data.diary||data.error||"일기 생성에 실패했습니다.";
-    document.getElementById('resultText').textContent=diary;
-    document.getElementById('resultDate').textContent=date.replace(/-/g,'.')+' 기록';
-    document.getElementById('resultSection').classList.add('show');
-    document.getElementById('resultSection').scrollIntoView({behavior:'smooth',block:'start'});
-  }catch(e){alert('오류가 발생했습니다. 다시 시도해주세요.');}
-  document.getElementById('loadingOverlay').classList.remove('show');
-  document.getElementById('generateBtn').disabled=false;
+if(!photoBase64List.length){ alert(‘사진을 먼저 선택해주세요! 📸’); return; }
+const place = document.getElementById(‘diaryPlace’).value;
+const event = document.getElementById(‘diaryEvent’).value;
+if(!place && !event){ alert(‘장소나 하이라이트를 입력해주세요!’); return; }
+const date = document.getElementById(‘diaryDate’).value;
+const exclude = document.getElementById(‘diaryExclude’).value;
+
+document.getElementById(‘loadingOverlay’).classList.add(‘show’);
+document.getElementById(‘generateBtn’).disabled = true;
+
+try {
+const prompt = `아이와 함께한 하루를 육아일기로 써줘.
+
+날짜: ${date}
+장소: ${place || ‘미입력’}
+오늘의 하이라이트: ${event || ‘미입력’}
+톤: ${selectedTones.join(’, ’)}
+${exclude ? ’빼고 싶은 것: ’ + exclude : ‘’}
+
+첨부된 사진들을 보고 아이의 표정, 행동, 분위기를 자세히 묘사해줘.
+${selectedTones.join(’, ’)} 톤으로 400자 내외로 써줘.
+감동적인 제목도 붙여줘.
+마지막에 오늘 하루를 한 문장으로 요약해줘.`;
+
+```
+const imgs = photoBase64List.map(function(b64){
+  const mt = b64.split(';')[0].split(':')[1];
+  return { type: "image", source: { type: "base64", media_type: mt, data: b64.split(',')[1] } };
+});
+const messages = [{ role: "user", content: [...imgs, { type: "text", text: prompt }] }];
+
+const res = await fetch(WORKER_URL + "/", {
+  method: "POST",
+  headers: { "Content-Type": "application/json" },
+  body: JSON.stringify({ messages: messages })
+});
+
+const data = await res.json();
+const diary = data.diary || data.error || "일기 생성에 실패했습니다.";
+document.getElementById('resultText').textContent = diary;
+document.getElementById('resultDate').textContent = date.replace(/-/g, '.') + ' 기록';
+document.getElementById('resultSection').classList.add('show');
+document.getElementById('resultSection').scrollIntoView({ behavior: 'smooth', block: 'start' });
+```
+
+} catch(e){
+alert(‘오류가 발생했습니다. 다시 시도해주세요.’);
 }
+
+document.getElementById(‘loadingOverlay’).classList.remove(‘show’);
+document.getElementById(‘generateBtn’).disabled = false;
+}
+
 function copyDiary(){
-  const text=document.getElementById('resultText').textContent;
-  navigator.clipboard.writeText(text).then(function(){const btn=document.querySelector('.copy-btn');btn.textContent='✅ 복사됐어요';setTimeout(function(){btn.textContent='복사하기';},2000);});
+const text = document.getElementById(‘resultText’).textContent;
+navigator.clipboard.writeText(text).then(function(){
+const btn = document.querySelector(’.copy-btn’);
+btn.textContent = ‘✅ 복사됐어요’;
+setTimeout(function(){ btn.textContent = ‘복사하기’; }, 2000);
+});
 }
 </script>
+
 </body>
 </html>
