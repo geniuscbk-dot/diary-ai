@@ -118,6 +118,8 @@ box-shadow:0 4px 16px rgba(74,140,122,.3);
 .generate-btn:disabled{background:#a8cfc4 !important;box-shadow:none;}
 .divider{display:flex;align-items:center;gap:10px;margin:4px 0 14px;color:var(–text-muted);font-size:11px;}
 .divider::before,.divider::after{content:’’;flex:1;height:1px;background:var(–border);}
+.writer-btn{flex:1;padding:8px 2px;border-radius:10px;border:1px solid #c8e4de;font-size:11px;font-weight:500;background:#e2f2ee;color:#4a8c7a;font-family:‘Noto Sans KR’,sans-serif;text-align:center;cursor:pointer;transition:all .15s;user-select:none;-webkit-tap-highlight-color:rgba(74,140,122,.2);}
+.writer-btn.active{background:#4a8c7a;color:#fff;border-color:#4a8c7a;}
 
 /* 결과 */
 .result-section{background:var(–surface);border-radius:16px;padding:22px 18px;box-shadow:var(–shadow);border:1px solid var(–border);display:none;}
@@ -199,6 +201,23 @@ box-shadow:0 4px 16px rgba(74,140,122,.3);
       </label>
     </div>
     <div class="form-group">
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;">
+        <div>
+          <label class="form-label">아이 이름</label>
+          <input type="text" class="form-input" id="childName" placeholder="예: 성하">
+        </div>
+        <div>
+          <label class="form-label">일기 쓰는 사람</label>
+          <div style="display:flex;gap:5px;">
+            <button type="button" class="writer-btn active" data-writer="아빠">👨 아빠</button>
+            <button type="button" class="writer-btn" data-writer="엄마">👩 엄마</button>
+            <button type="button" class="writer-btn writer-custom" id="writerCustomBtn">✏️ 직접</button>
+          </div>
+          <input type="text" class="form-input" id="writerCustomInput" placeholder="입력하기" style="display:none;margin-top:6px;">
+        </div>
+      </div>
+    </div>
+    <div class="form-group">
       <label class="form-label">어디서 놀았나요?</label>
       <input type="text" class="form-input" id="diaryPlace" placeholder="예: 서울대공원 동물원">
     </div>
@@ -251,6 +270,25 @@ box-shadow:0 4px 16px rgba(74,140,122,.3);
 var WORKER_URL = "https://diary-ai.byungkuen.workers.dev";
 var photoBase64List = [null, null, null];
 var selectedTones = ["따뜻하고 포근하게"];
+
+// 작성자 버튼
+var selectedWriter = "아빠";
+document.querySelectorAll('.writer-btn').forEach(function(btn) {
+  btn.addEventListener('click', function() {
+    document.querySelectorAll('.writer-btn').forEach(function(b) { b.classList.remove('active'); });
+    btn.classList.add('active');
+    if(btn.id === 'writerCustomBtn') {
+      document.getElementById('writerCustomInput').style.display = 'block';
+      selectedWriter = '';
+    } else {
+      document.getElementById('writerCustomInput').style.display = 'none';
+      selectedWriter = btn.getAttribute('data-writer');
+    }
+  });
+});
+document.getElementById('writerCustomInput').addEventListener('input', function() {
+  selectedWriter = this.value;
+});
 
 // 날짜
 document.getElementById('diaryDate').addEventListener('change', function() {
@@ -357,13 +395,20 @@ document.getElementById('generateBtn').addEventListener('click', function() {
   document.getElementById('loadingOverlay').classList.add('show');
   document.getElementById('generateBtn').disabled = true;
 
+  var childName = document.getElementById('childName').value || '아이';
+  var writer = selectedWriter || document.getElementById('writerCustomInput').value || '부모';
+
   var prompt = '아이와 함께한 하루를 육아일기로 써줘.\n\n' +
     '날짜: ' + (date || '미입력') + '\n' +
+    '아이 이름: ' + childName + '\n' +
+    '일기 쓰는 사람: ' + writer + '\n' +
     '장소: ' + (place || '미입력') + '\n' +
     '톤: ' + selectedTones.join(', ') + '\n' +
     (exclude ? '빼고 싶은 것: ' + exclude + '\n' : '') +
     '\n사진은 순서대로 [하루의 첫 페이지, 가장 빛났던 순간, 하루를 마치며] 순간이야.\n' +
     '각 사진의 아이 표정, 행동, 분위기를 묘사하고 스토리라인으로 연결해줘.\n' +
+    writer + '가 ' + childName + '에게 그날을 추억하며 들려주는 이야기 형식으로 써줘.\n' +
+    '예: "' + childName + '야, ' + writer + '는 오늘 ' + childName + '와 함께해서 너무 행복했어!" 같은 말투로.\n' +
     selectedTones.join(', ') + ' 톤으로 400자 내외로 써줘.\n' +
     '감동적인 제목도 붙여줘.\n마지막에 오늘 하루를 한 문장으로 요약해줘.';
 
