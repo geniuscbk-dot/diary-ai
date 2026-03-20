@@ -54,6 +54,8 @@ input[type=file]{display:none;}
 .form-label{font-size:11px;font-weight:700;color:var(--text-soft);margin-bottom:6px;display:block;}
 .form-input{width:100%;border:1px solid var(--border);border-radius:10px;padding:10px 14px;font-size:14px;font-family:'Noto Sans KR',sans-serif;color:var(--text);background:var(--mint-wash);outline:none;transition:all .15s;-webkit-appearance:none;appearance:none;}
 input[type=date]{color-scheme:light;}
+.date-wrap{width:100%;border:1px solid var(--border);border-radius:10px;padding:10px 14px;font-size:14px;font-family:'Noto Sans KR',sans-serif;background:var(--mint-wash);cursor:pointer;display:flex;align-items:center;justify-content:space-between;transition:all .15s;}
+.date-wrap:active{border-color:var(--mint-mid);background:#fff;}
 .form-input:focus{border-color:var(--mint-mid);background:#fff;box-shadow:0 0 0 3px rgba(122,181,165,.12);}
 textarea.form-input{resize:none;height:68px;line-height:1.5;}
 .tone-options{display:grid;grid-template-columns:repeat(3,1fr);gap:7px;}
@@ -109,7 +111,12 @@ textarea.form-input{resize:none;height:68px;line-height:1.5;}
     <div class="card-title">✏️ 오늘의 기록</div>
     <div class="form-group">
       <label class="form-label">날짜</label>
-      <input type="date" class="form-input" id="diaryDate">
+      <div class="date-wrap" id="dateWrap" onclick="document.getElementById('diaryDate').showPicker()">
+        <span id="datePlaceholder" style="color:var(--text-muted)">클릭해서 날짜를 선택해요</span>
+        <span id="dateDisplay" style="display:none;color:var(--text)"></span>
+        <span style="color:var(--text-muted);font-size:16px;">📅</span>
+      </div>
+      <input type="date" class="form-input" id="diaryDate" style="position:absolute;opacity:0;pointer-events:none;width:1px;height:1px;">
     </div>
     <div class="form-group">
       <label class="form-label">어디서 놀았나요?</label>
@@ -162,7 +169,19 @@ var WORKER_URL = "https://diary-ai.byungkuen.workers.dev";
 var photoBase64List = [];
 var selectedTones = ["따뜻하고 포근하게"];
 
-document.getElementById(‘diaryDate’).value = new Date().toISOString().split(‘T’)[0];
+document.getElementById(‘diaryDate’).value = “”;
+
+document.getElementById(‘diaryDate’).addEventListener(‘change’, function() {
+var val = this.value;
+if(val) {
+document.getElementById(‘datePlaceholder’).style.display = ‘none’;
+document.getElementById(‘dateDisplay’).style.display = ‘inline’;
+document.getElementById(‘dateDisplay’).textContent = val.replace(/-/g, ‘.’);
+} else {
+document.getElementById(‘datePlaceholder’).style.display = ‘inline’;
+document.getElementById(‘dateDisplay’).style.display = ‘none’;
+}
+});
 
 // 무드 버튼 이벤트
 document.getElementById(‘toneOptions’).addEventListener(‘click’, function(e) {
