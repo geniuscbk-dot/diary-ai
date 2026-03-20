@@ -45,43 +45,65 @@ header{background:rgba(247,251,250,.92);backdrop-filter:blur(10px);border-bottom
 .upload-limit{font-size:11px;color:var(--text-muted);margin-top:4px;}
 input[type=file]{display:none;}
 .photos-preview{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px;}
-.photo-thumb{width:68px;height:68px;border-radius:10px;object-fit:cover;border:2px solid var(--mint-soft);box-shadow:0 2px 8px rgba(74,140,122,.1);}
+.photo-thumb{width:68px;height:68px;border-radius:10px;object-fit:cover;border:2px solid var(--mint-soft);}
 .auto-info{background:var(--mint-pale);border-radius:8px;padding:8px 12px;margin-top:10px;display:none;border:1px solid var(--mint-soft);}
 .auto-info.show{display:block;}
 .auto-info-text{font-size:11px;color:var(--mint-deep);}
 .form-group{margin-bottom:14px;}
 .form-group:last-child{margin-bottom:0;}
 .form-label{font-size:11px;font-weight:700;color:var(--text-soft);margin-bottom:6px;display:block;}
-.form-input{width:100%;border:1px solid var(--border);border-radius:10px;padding:10px 14px;font-size:14px;font-family:'Noto Sans KR',sans-serif;color:var(--text);background:var(--mint-wash);outline:none;transition:all .15s;-webkit-appearance:none;appearance:none;}
-input[type=date]{color-scheme:light;}
-.date-wrap{width:100%;border:1px solid var(--border);border-radius:10px;padding:10px 14px;font-size:14px;font-family:'Noto Sans KR',sans-serif;background:var(--mint-wash);cursor:pointer;display:flex;align-items:center;justify-content:space-between;transition:all .15s;}
-.date-wrap:active{border-color:var(--mint-mid);background:#fff;}
-.form-input:focus{border-color:var(--mint-mid);background:#fff;box-shadow:0 0 0 3px rgba(122,181,165,.12);}
+
+/* 날짜 - label로 감싸서 클릭 확실하게 */
+.date-label{display:block;position:relative;}
+.date-input-real{position:absolute;top:0;left:0;width:100%;height:100%;opacity:0;cursor:pointer;z-index:2;}
+.date-display{width:100%;border:1px solid var(–border);border-radius:10px;padding:10px 14px;font-size:14px;font-family:‘Noto Sans KR’,sans-serif;background:var(–mint-wash);display:flex;align-items:center;justify-content:space-between;color:var(–text-muted);}
+.date-display.has-value{color:var(–text);}
+
+.form-input{width:100%;border:1px solid var(–border);border-radius:10px;padding:10px 14px;font-size:14px;font-family:‘Noto Sans KR’,sans-serif;color:var(–text);background:var(–mint-wash);outline:none;transition:all .15s;-webkit-appearance:none;appearance:none;}
+.form-input:focus{border-color:var(–mint-mid);background:#fff;box-shadow:0 0 0 3px rgba(122,181,165,.12);}
 textarea.form-input{resize:none;height:68px;line-height:1.5;}
+
+/* 무드 버튼 - 터치 확실하게 */
 .tone-options{display:grid;grid-template-columns:repeat(3,1fr);gap:7px;}
-.tone-btn{padding:8px 6px;border-radius:12px;border:1px solid var(--border);font-size:11px;font-weight:500;cursor:pointer;background:var(--surface2);color:var(--text-soft);transition:all .15s;font-family:'Noto Sans KR',sans-serif;text-align:center;line-height:1.4;-webkit-tap-highlight-color:transparent;}
-.tone-btn.active{background:var(--mint-deep);color:#fff;border-color:var(--mint-deep);box-shadow:0 2px 8px rgba(74,140,122,.25);}
-.divider{display:flex;align-items:center;gap:10px;margin:4px 0 14px;color:var(--text-muted);font-size:11px;}
-.divider::before,.divider::after{content:'';flex:1;height:1px;background:var(--border);}
-.generate-btn{width:100%;padding:15px;border-radius:14px;border:none;background:linear-gradient(135deg,var(--mint-deep),var(--mint-mid));color:#fff;font-size:15px;font-weight:700;font-family:'Noto Sans KR',sans-serif;cursor:pointer;transition:all .2s;margin-bottom:20px;box-shadow:0 4px 16px rgba(74,140,122,.3);letter-spacing:.02em;}
-.generate-btn:active{transform:scale(.97);}
-.generate-btn:disabled{background:var(--mint-soft);box-shadow:none;cursor:not-allowed;}
-.result-section{background:var(--surface);border-radius:16px;padding:22px 18px;box-shadow:var(--shadow);border:1px solid var(--border);display:none;}
+.tone-btn{
+padding:10px 4px;
+border-radius:12px;
+border:1px solid var(–border);
+font-size:11px;font-weight:500;
+background:var(–surface2);
+color:var(–text-soft);
+font-family:‘Noto Sans KR’,sans-serif;
+text-align:center;
+line-height:1.4;
+cursor:pointer;
+-webkit-tap-highlight-color:rgba(74,140,122,.2);
+transition:background .15s, color .15s, border-color .15s;
+user-select:none;
+display:block;
+width:100%;
+}
+.tone-btn.active{background:var(–mint-deep);color:#fff;border-color:var(–mint-deep);box-shadow:0 2px 8px rgba(74,140,122,.25);}
+
+.divider{display:flex;align-items:center;gap:10px;margin:4px 0 14px;color:var(–text-muted);font-size:11px;}
+.divider::before,.divider::after{content:’’;flex:1;height:1px;background:var(–border);}
+.generate-btn{width:100%;padding:15px;border-radius:14px;border:none;background:linear-gradient(135deg,var(–mint-deep),var(–mint-mid));color:#fff;font-size:15px;font-weight:700;font-family:‘Noto Sans KR’,sans-serif;cursor:pointer;transition:all .2s;margin-bottom:20px;box-shadow:0 4px 16px rgba(74,140,122,.3);}
+.generate-btn:disabled{background:var(–mint-soft);box-shadow:none;}
+.result-section{background:var(–surface);border-radius:16px;padding:22px 18px;box-shadow:var(–shadow);border:1px solid var(–border);display:none;}
 .result-section.show{display:block;animation:fadeUp .4s ease;}
 @keyframes fadeUp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
-.result-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;padding-bottom:12px;border-bottom:1px solid var(--border);}
-.result-title{font-family:'Gowun Batang',serif;font-size:14px;color:var(--mint-deep);}
-.copy-btn{padding:5px 12px;border-radius:6px;border:1px solid var(--mint-soft);background:var(--mint-pale);color:var(--mint-deep);font-size:11px;font-weight:700;cursor:pointer;font-family:'Noto Sans KR',sans-serif;transition:all .15s;}
-.copy-btn:active{background:var(--mint-deep);color:#fff;}
-.result-text{font-family:'Gowun Batang',serif;font-size:15px;line-height:2;color:var(--text);white-space:pre-wrap;}
-.result-date{font-size:11px;color:var(--text-muted);margin-top:14px;text-align:right;font-style:italic;}
+.result-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;padding-bottom:12px;border-bottom:1px solid var(–border);}
+.result-title{font-family:‘Gowun Batang’,serif;font-size:14px;color:var(–mint-deep);}
+.copy-btn{padding:5px 12px;border-radius:6px;border:1px solid var(–mint-soft);background:var(–mint-pale);color:var(–mint-deep);font-size:11px;font-weight:700;cursor:pointer;font-family:‘Noto Sans KR’,sans-serif;}
+.result-text{font-family:‘Gowun Batang’,serif;font-size:15px;line-height:2;color:var(–text);white-space:pre-wrap;}
+.result-date{font-size:11px;color:var(–text-muted);margin-top:14px;text-align:right;font-style:italic;}
 .loading-overlay{display:none;position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(247,244,239,.92);backdrop-filter:blur(4px);z-index:100;flex-direction:column;align-items:center;justify-content:center;gap:16px;}
 .loading-overlay.show{display:flex;}
 .loading-emoji{font-size:40px;animation:pulse 1.5s ease-in-out infinite;}
 @keyframes pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.1)}}
-.loading-text{font-family:'Gowun Batang',serif;font-size:16px;color:var(--text);text-align:center;line-height:1.7;}
-.loading-sub{font-size:12px;color:var(--text-muted);font-family:'Noto Sans KR',sans-serif;}
+.loading-text{font-family:‘Gowun Batang’,serif;font-size:16px;color:var(–text);text-align:center;line-height:1.7;}
+.loading-sub{font-size:12px;color:var(–text-muted);font-family:‘Noto Sans KR’,sans-serif;}
 </style>
+
 </head>
 <body>
 <header>
@@ -94,9 +116,12 @@ textarea.form-input{resize:none;height:68px;line-height:1.5;}
     <div class="intro-title">오늘 하루를 기록해요</div>
     <div class="intro-desc">사진과 몇 가지 메모만 있으면<br>AI가 따뜻한 육아일기를 써드려요</div>
   </div>
+
+  <!-- 사진 -->
+
   <div class="card">
     <div class="card-title">📸 오늘의 사진</div>
-    <div class="upload-area" id="uploadArea">
+    <div class="upload-area" id="uploadArea" onclick="document.getElementById('photoInput').click()">
       <div class="upload-icon">🖼️</div>
       <div class="upload-text">사진을 눌러서 선택해요<br><strong>최대 4장까지 선택 가능해요</strong></div>
       <div class="upload-limit">4장을 초과하면 처음 4장만 사용돼요</div>
@@ -107,16 +132,19 @@ textarea.form-input{resize:none;height:68px;line-height:1.5;}
       <div class="auto-info-text" id="autoInfoText"></div>
     </div>
   </div>
+
+  <!-- 기록 -->
+
   <div class="card">
     <div class="card-title">✏️ 오늘의 기록</div>
     <div class="form-group">
       <label class="form-label">날짜</label>
-      <div class="date-wrap" id="dateWrap" onclick="document.getElementById('diaryDate').showPicker()">
-        <span id="datePlaceholder" style="color:var(--text-muted)">클릭해서 날짜를 선택해요</span>
-        <span id="dateDisplay" style="display:none;color:var(--text)"></span>
-        <span style="color:var(--text-muted);font-size:16px;">📅</span>
-      </div>
-      <input type="date" class="form-input" id="diaryDate" style="position:absolute;opacity:0;pointer-events:none;width:1px;height:1px;">
+      <label class="date-label">
+        <input type="date" class="date-input-real" id="diaryDate">
+        <div class="date-display" id="dateDisplay">
+          <span id="dateTxt">클릭해서 날짜를 선택해요 📅</span>
+        </div>
+      </label>
     </div>
     <div class="form-group">
       <label class="form-label">어디서 놀았나요?</label>
@@ -127,20 +155,23 @@ textarea.form-input{resize:none;height:68px;line-height:1.5;}
       <input type="text" class="form-input" id="diaryEvent" placeholder="예: 기린 처음 봤을 때 놀란 표정">
     </div>
   </div>
+
+  <!-- 스타일 -->
+
   <div class="card">
     <div class="card-title">🎨 일기 스타일</div>
     <div class="form-group">
       <label class="form-label">오늘의 무드 <span style="color:var(--text-muted);font-weight:400">(최대 2개)</span></label>
-      <div class="tone-options" id="toneOptions">
-        <button class="tone-btn active" data-tone="따뜻하고 포근하게">🌸 따뜻하게</button>
-        <button class="tone-btn" data-tone="유머러스하고 재미있게">😄 재미있게</button>
-        <button class="tone-btn" data-tone="감성적이고 시적으로">🌙 감성적으로</button>
-        <button class="tone-btn" data-tone="짧고 간결하게">✏️ 간결하게</button>
-        <button class="tone-btn" data-tone="뭉클하고 눈물나게">🥹 뭉클하게</button>
-        <button class="tone-btn" data-tone="잔잔하고 평화롭게">🌿 잔잔하게</button>
-        <button class="tone-btn" data-tone="쿨하고 담백하게">😎 쿨하게</button>
-        <button class="tone-btn" data-tone="동화처럼 신비롭게">📖 동화처럼</button>
-        <button class="tone-btn" data-tone="편지처럼 다정하게">💌 편지처럼</button>
+      <div class="tone-options">
+        <button type="button" class="tone-btn active" data-tone="따뜻하고 포근하게">🌸 따뜻하게</button>
+        <button type="button" class="tone-btn" data-tone="유머러스하고 재미있게">😄 재미있게</button>
+        <button type="button" class="tone-btn" data-tone="감성적이고 시적으로">🌙 감성적으로</button>
+        <button type="button" class="tone-btn" data-tone="짧고 간결하게">✏️ 간결하게</button>
+        <button type="button" class="tone-btn" data-tone="뭉클하고 눈물나게">🥹 뭉클하게</button>
+        <button type="button" class="tone-btn" data-tone="잔잔하고 평화롭게">🌿 잔잔하게</button>
+        <button type="button" class="tone-btn" data-tone="쿨하고 담백하게">😎 쿨하게</button>
+        <button type="button" class="tone-btn" data-tone="동화처럼 신비롭게">📖 동화처럼</button>
+        <button type="button" class="tone-btn" data-tone="편지처럼 다정하게">💌 편지처럼</button>
       </div>
     </div>
     <div class="divider">선택사항</div>
@@ -149,192 +180,193 @@ textarea.form-input{resize:none;height:68px;line-height:1.5;}
       <textarea class="form-input" id="diaryExclude" placeholder="예: 아이가 울었던 순간, 지저분했던 장면"></textarea>
     </div>
   </div>
-  <button class="generate-btn" id="generateBtn">✨ 육아일기 만들기</button>
+
+<button type="button" class="generate-btn" id="generateBtn">✨ 육아일기 만들기</button>
+
   <div class="result-section" id="resultSection">
     <div class="result-header">
       <span class="result-title">📖 오늘의 육아일기</span>
-      <button class="copy-btn" id="copyBtn">복사하기</button>
+      <button type="button" class="copy-btn" id="copyBtn">복사하기</button>
     </div>
     <div class="result-text" id="resultText"></div>
     <div class="result-date" id="resultDate"></div>
   </div>
 </div>
+
 <div class="loading-overlay" id="loadingOverlay">
   <div class="loading-emoji">✍️</div>
   <div class="loading-text">AI가 일기를 쓰고 있어요</div>
   <div class="loading-sub">오늘 하루를 예쁘게 담을게요 😊</div>
 </div>
+
 <script>
 var WORKER_URL = "https://diary-ai.byungkuen.workers.dev";
 var photoBase64List = [];
 var selectedTones = ["따뜻하고 포근하게"];
 
-document.getElementById(‘diaryDate’).value = “”;
-
-document.getElementById(‘diaryDate’).addEventListener(‘change’, function() {
-var val = this.value;
-if(val) {
-document.getElementById(‘datePlaceholder’).style.display = ‘none’;
-document.getElementById(‘dateDisplay’).style.display = ‘inline’;
-document.getElementById(‘dateDisplay’).textContent = val.replace(/-/g, ‘.’);
-} else {
-document.getElementById(‘datePlaceholder’).style.display = ‘inline’;
-document.getElementById(‘dateDisplay’).style.display = ‘none’;
-}
+// 날짜 변경
+document.getElementById('diaryDate').addEventListener('change', function() {
+  var val = this.value;
+  var display = document.getElementById('dateDisplay');
+  var txt = document.getElementById('dateTxt');
+  if(val) {
+    txt.textContent = val.replace(/-/g, '.') + ' 📅';
+    display.classList.add('has-value');
+  } else {
+    txt.textContent = '클릭해서 날짜를 선택해요 📅';
+    display.classList.remove('has-value');
+  }
 });
 
-// 무드 버튼 이벤트
-document.getElementById(‘toneOptions’).addEventListener(‘click’, function(e) {
-var btn = e.target.closest(’.tone-btn’);
-if(!btn) return;
-var tone = btn.getAttribute(‘data-tone’);
-var idx = selectedTones.indexOf(tone);
-if(idx > -1) {
-if(selectedTones.length > 1) {
-selectedTones.splice(idx, 1);
-btn.classList.remove(‘active’);
-}
-} else {
-if(selectedTones.length >= 2) {
-var firstTone = selectedTones.shift();
-document.querySelectorAll(’.tone-btn’).forEach(function(b) {
-if(b.getAttribute(‘data-tone’) === firstTone) b.classList.remove(‘active’);
+// 무드 버튼
+var toneOptions = document.getElementById('toneOptions') || document.querySelector('.tone-options');
+document.querySelector('.tone-options').addEventListener('touchend', function(e) {
+  e.preventDefault();
+  var btn = e.target.closest('.tone-btn');
+  if(!btn) return;
+  handleTone(btn);
 });
-}
-selectedTones.push(tone);
-btn.classList.add(‘active’);
-}
+document.querySelector('.tone-options').addEventListener('click', function(e) {
+  var btn = e.target.closest('.tone-btn');
+  if(!btn) return;
+  handleTone(btn);
 });
+
+function handleTone(btn) {
+  var tone = btn.getAttribute('data-tone');
+  var idx = selectedTones.indexOf(tone);
+  if(idx > -1) {
+    if(selectedTones.length > 1) {
+      selectedTones.splice(idx, 1);
+      btn.classList.remove('active');
+    }
+  } else {
+    if(selectedTones.length >= 2) {
+      var firstTone = selectedTones.shift();
+      document.querySelectorAll('.tone-btn').forEach(function(b) {
+        if(b.getAttribute('data-tone') === firstTone) b.classList.remove('active');
+      });
+    }
+    selectedTones.push(tone);
+    btn.classList.add('active');
+  }
+}
 
 // 사진 업로드
-document.getElementById(‘uploadArea’).addEventListener(‘click’, function() {
-document.getElementById(‘photoInput’).click();
+document.getElementById('photoInput').addEventListener('change', function() {
+  var files = Array.from(this.files).slice(0, 4);
+  if(!files.length) return;
+  var preview = document.getElementById('photosPreview');
+  var uploadArea = document.getElementById('uploadArea');
+  preview.innerHTML = '';
+  photoBase64List = [];
+  uploadArea.classList.add('has-photos');
+  var total = Array.from(this.files).length;
+  files.forEach(function(f, i) {
+    fileToBase64(f).then(function(b64) {
+      photoBase64List.push(b64);
+      var img = document.createElement('img');
+      img.className = 'photo-thumb';
+      img.src = b64;
+      preview.appendChild(img);
+      if(i === 0) tryExtractDate(f);
+    });
+  });
+  document.getElementById('autoInfo').classList.add('show');
+  document.getElementById('autoInfoText').textContent =
+    total > 4 ? '📷 사진 4장 선택됐어요 (' + total + '장 중 처음 4장)' : '📷 사진 ' + files.length + '장이 선택됐어요';
 });
-document.getElementById(‘photoInput’).addEventListener(‘change’, function() {
-handlePhotos(this);
-});
-
-function handlePhotos(input) {
-var files = Array.from(input.files).slice(0, 4);
-if(!files.length) return;
-var preview = document.getElementById(‘photosPreview’);
-var uploadArea = document.getElementById(‘uploadArea’);
-preview.innerHTML = ‘’;
-photoBase64List = [];
-uploadArea.classList.add(‘has-photos’);
-var count = 0;
-files.forEach(function(f) {
-fileToBase64(f).then(function(b64) {
-photoBase64List.push(b64);
-var img = document.createElement(‘img’);
-img.className = ‘photo-thumb’;
-img.src = b64;
-preview.appendChild(img);
-count++;
-if(count === 1) tryExtractDate(f);
-});
-});
-document.getElementById(‘autoInfo’).classList.add(‘show’);
-var total = Array.from(input.files).length;
-document.getElementById(‘autoInfoText’).textContent =
-total > 4 ? ‘📷 사진 4장 선택됐어요 (’ + total + ‘장 중 처음 4장)’ : ’📷 사진 ’ + files.length + ‘장이 선택됐어요’;
-}
 
 function fileToBase64(file) {
-return new Promise(function(resolve) {
-var img = new Image();
-var reader = new FileReader();
-reader.onload = function(e) {
-img.onload = function() {
-var canvas = document.createElement(‘canvas’);
-var maxSize = 1024;
-var w = img.width, h = img.height;
-if(w > maxSize || h > maxSize) {
-if(w > h) { h = Math.round(h * maxSize / w); w = maxSize; }
-else { w = Math.round(w * maxSize / h); h = maxSize; }
-}
-canvas.width = w; canvas.height = h;
-canvas.getContext(‘2d’).drawImage(img, 0, 0, w, h);
-resolve(canvas.toDataURL(‘image/jpeg’, 0.7));
-};
-img.src = e.target.result;
-};
-reader.readAsDataURL(file);
-});
+  return new Promise(function(resolve) {
+    var img = new Image();
+    var reader = new FileReader();
+    reader.onload = function(e) {
+      img.onload = function() {
+        var canvas = document.createElement('canvas');
+        var maxSize = 1024;
+        var w = img.width, h = img.height;
+        if(w > maxSize || h > maxSize) {
+          if(w > h) { h = Math.round(h * maxSize / w); w = maxSize; }
+          else { w = Math.round(w * maxSize / h); h = maxSize; }
+        }
+        canvas.width = w; canvas.height = h;
+        canvas.getContext('2d').drawImage(img, 0, 0, w, h);
+        resolve(canvas.toDataURL('image/jpeg', 0.7));
+      };
+      img.src = e.target.result;
+    };
+    reader.readAsDataURL(file);
+  });
 }
 
 function tryExtractDate(file) {
-var d = new Date(file.lastModified);
-var s = d.toISOString().split(‘T’)[0];
-if(s) {
-document.getElementById(‘diaryDate’).value = s;
-document.getElementById(‘autoInfoText’).textContent = ‘📷 사진 촬영일 ’ + s.replace(/-/g, ‘.’) + ’ 자동 입력됐어요’;
-}
+  var d = new Date(file.lastModified);
+  var s = d.toISOString().split('T')[0];
+  if(s) {
+    document.getElementById('diaryDate').value = s;
+    document.getElementById('dateTxt').textContent = s.replace(/-/g, '.') + ' 📅';
+    document.getElementById('dateDisplay').classList.add('has-value');
+    document.getElementById('autoInfoText').textContent = '📷 사진 촬영일 ' + s.replace(/-/g, '.') + ' 자동 입력됐어요';
+  }
 }
 
 // 생성 버튼
-document.getElementById(‘generateBtn’).addEventListener(‘click’, function() {
-generateDiary();
+document.getElementById('generateBtn').addEventListener('click', function() {
+  if(!photoBase64List.length) { alert('사진을 먼저 선택해주세요! 📸'); return; }
+  var place = document.getElementById('diaryPlace').value;
+  var event = document.getElementById('diaryEvent').value;
+  if(!place && !event) { alert('장소나 하이라이트를 입력해주세요!'); return; }
+  var date = document.getElementById('diaryDate').value;
+  var exclude = document.getElementById('diaryExclude').value;
+
+  document.getElementById('loadingOverlay').classList.add('show');
+  document.getElementById('generateBtn').disabled = true;
+
+  var prompt = '아이와 함께한 하루를 육아일기로 써줘.\n\n' +
+    '날짜: ' + (date || '미입력') + '\n' +
+    '장소: ' + (place || '미입력') + '\n' +
+    '오늘의 하이라이트: ' + (event || '미입력') + '\n' +
+    '톤: ' + selectedTones.join(', ') + '\n' +
+    (exclude ? '빼고 싶은 것: ' + exclude + '\n' : '') +
+    '\n첨부된 사진들을 보고 아이의 표정, 행동, 분위기를 자세히 묘사해줘.\n' +
+    selectedTones.join(', ') + ' 톤으로 400자 내외로 써줘.\n' +
+    '감동적인 제목도 붙여줘.\n마지막에 오늘 하루를 한 문장으로 요약해줘.';
+
+  var imgs = photoBase64List.map(function(b64) {
+    var mt = b64.split(';')[0].split(':')[1];
+    return { type: "image", source: { type: "base64", media_type: mt, data: b64.split(',')[1] } };
+  });
+  var messages = [{ role: "user", content: imgs.concat([{ type: "text", text: prompt }]) }];
+
+  fetch(WORKER_URL + "/", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ messages: messages })
+  })
+  .then(function(res) { return res.json(); })
+  .then(function(data) {
+    var diary = data.diary || data.error || "일기 생성에 실패했습니다.";
+    document.getElementById('resultText').textContent = diary;
+    document.getElementById('resultDate').textContent = (date || '').replace(/-/g, '.') + ' 기록';
+    document.getElementById('resultSection').classList.add('show');
+    document.getElementById('resultSection').scrollIntoView({ behavior: 'smooth', block: 'start' });
+  })
+  .catch(function() { alert('오류가 발생했습니다. 다시 시도해주세요.'); })
+  .finally(function() {
+    document.getElementById('loadingOverlay').classList.remove('show');
+    document.getElementById('generateBtn').disabled = false;
+  });
 });
 
-function generateDiary() {
-if(!photoBase64List.length) { alert(‘사진을 먼저 선택해주세요! 📸’); return; }
-var place = document.getElementById(‘diaryPlace’).value;
-var event = document.getElementById(‘diaryEvent’).value;
-if(!place && !event) { alert(‘장소나 하이라이트를 입력해주세요!’); return; }
-var date = document.getElementById(‘diaryDate’).value;
-var exclude = document.getElementById(‘diaryExclude’).value;
-
-document.getElementById(‘loadingOverlay’).classList.add(‘show’);
-document.getElementById(‘generateBtn’).disabled = true;
-
-var prompt = ‘아이와 함께한 하루를 육아일기로 써줘.\n\n’ +
-’날짜: ’ + date + ‘\n’ +
-’장소: ’ + (place || ‘미입력’) + ‘\n’ +
-’오늘의 하이라이트: ’ + (event || ‘미입력’) + ‘\n’ +
-‘톤: ’ + selectedTones.join(’, ’) + ‘\n’ +
-(exclude ? ‘빼고 싶은 것: ’ + exclude + ‘\n’ : ‘’) +
-‘\n첨부된 사진들을 보고 아이의 표정, 행동, 분위기를 자세히 묘사해줘.\n’ +
-selectedTones.join(’, ‘) + ’ 톤으로 400자 내외로 써줘.\n’ +
-‘감동적인 제목도 붙여줘.\n’ +
-‘마지막에 오늘 하루를 한 문장으로 요약해줘.’;
-
-var imgs = photoBase64List.map(function(b64) {
-var mt = b64.split(’;’)[0].split(’:’)[1];
-return { type: “image”, source: { type: “base64”, media_type: mt, data: b64.split(’,’)[1] } };
-});
-var messages = [{ role: “user”, content: imgs.concat([{ type: “text”, text: prompt }]) }];
-
-fetch(WORKER_URL + “/”, {
-method: “POST”,
-headers: { “Content-Type”: “application/json” },
-body: JSON.stringify({ messages: messages })
-})
-.then(function(res) { return res.json(); })
-.then(function(data) {
-var diary = data.diary || data.error || “일기 생성에 실패했습니다.”;
-document.getElementById(‘resultText’).textContent = diary;
-document.getElementById(‘resultDate’).textContent = date.replace(/-/g, ‘.’) + ’ 기록’;
-document.getElementById(‘resultSection’).classList.add(‘show’);
-document.getElementById(‘resultSection’).scrollIntoView({ behavior: ‘smooth’, block: ‘start’ });
-})
-.catch(function() {
-alert(‘오류가 발생했습니다. 다시 시도해주세요.’);
-})
-.finally(function() {
-document.getElementById(‘loadingOverlay’).classList.remove(‘show’);
-document.getElementById(‘generateBtn’).disabled = false;
-});
-}
-
-// 복사 버튼
-document.getElementById(‘copyBtn’).addEventListener(‘click’, function() {
-var text = document.getElementById(‘resultText’).textContent;
-navigator.clipboard.writeText(text).then(function() {
-var btn = document.getElementById(‘copyBtn’);
-btn.textContent = ‘✅ 복사됐어요’;
-setTimeout(function() { btn.textContent = ‘복사하기’; }, 2000);
-});
+// 복사
+document.getElementById('copyBtn').addEventListener('click', function() {
+  var text = document.getElementById('resultText').textContent;
+  navigator.clipboard.writeText(text).then(function() {
+    var btn = document.getElementById('copyBtn');
+    btn.textContent = '✅ 복사됐어요';
+    setTimeout(function() { btn.textContent = '복사하기'; }, 2000);
+  });
 });
 </script>
 
