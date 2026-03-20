@@ -285,7 +285,6 @@ ${selectedTones.join(’, ’)} 톤으로 400자 내외로 써줘.
 감동적인 제목도 붙여줘.
 마지막에 오늘 하루를 한 문장으로 요약해줘.`;
 
-```
 const imgs = photoBase64List.map(function(b64){
   const mt = b64.split(';')[0].split(':')[1];
   return { type: "image", source: { type: "base64", media_type: mt, data: b64.split(',')[1] } };
@@ -304,7 +303,6 @@ document.getElementById('resultText').textContent = diary;
 document.getElementById('resultDate').textContent = date.replace(/-/g, '.') + ' 기록';
 document.getElementById('resultSection').classList.add('show');
 document.getElementById('resultSection').scrollIntoView({ behavior: 'smooth', block: 'start' });
-```
 
 } catch(e){
 alert(‘오류가 발생했습니다. 다시 시도해주세요.’);
