@@ -191,7 +191,28 @@ async function handlePhotos(input){
   document.getElementById('autoInfo').classList.add('show');
   document.getElementById('autoInfoText').textContent=`📷 사진 ${files.length}장이 선택됐어요`;
 }
-function fileToBase64(file){return new Promise(function(resolve){const r=new FileReader();r.onload=function(e){resolve(e.target.result);};r.readAsDataURL(file);});}
+function fileToBase64(file){
+  return new Promise(function(resolve){
+    const img = new Image();
+    const reader = new FileReader();
+    reader.onload = function(e){
+      img.onload = function(){
+        const canvas = document.createElement('canvas');
+        const maxSize = 1024;
+        let w = img.width, h = img.height;
+        if(w > maxSize || h > maxSize){
+          if(w > h){ h = Math.round(h * maxSize / w); w = maxSize; }
+          else { w = Math.round(w * maxSize / h); h = maxSize; }
+        }
+        canvas.width = w; canvas.height = h;
+        canvas.getContext('2d').drawImage(img, 0, 0, w, h);
+        resolve(canvas.toDataURL('image/jpeg', 0.7));
+      };
+      img.src = e.target.result;
+    };
+    reader.readAsDataURL(file);
+  });
+}
 function tryExtractDate(file){
   const d=new Date(file.lastModified);
   const s=d.toISOString().split('T')[0];
