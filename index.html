@@ -172,26 +172,26 @@ box-shadow:0 4px 16px rgba(74,140,122,.3);
       <div class="photo-slot">
         <div class="photo-slot-label">오늘의 시작</div>
         <div class="photo-slot-sub">하루의 첫 페이지</div>
-        <div class="photo-slot-area" id="slot0">
-          <span class="photo-slot-empty">+</span>
-          <input type="file" id="photo0" accept="image/*">
-        </div>
+        <label class="photo-slot-area" id="slot0" for="photo0">
+          <span class="photo-slot-empty" id="empty0">+</span>
+        </label>
+        <input type="file" id="photo0" accept="image/*" style="display:none;">
       </div>
       <div class="photo-slot">
         <div class="photo-slot-label">오늘의 하이라이트</div>
         <div class="photo-slot-sub">가장 빛났던 순간</div>
-        <div class="photo-slot-area" id="slot1">
-          <span class="photo-slot-empty">+</span>
-          <input type="file" id="photo1" accept="image/*">
-        </div>
+        <label class="photo-slot-area" id="slot1" for="photo1">
+          <span class="photo-slot-empty" id="empty1">+</span>
+        </label>
+        <input type="file" id="photo1" accept="image/*" style="display:none;">
       </div>
       <div class="photo-slot">
         <div class="photo-slot-label">오늘의 마무리</div>
         <div class="photo-slot-sub">하루를 마치며</div>
-        <div class="photo-slot-area" id="slot2">
-          <span class="photo-slot-empty">+</span>
-          <input type="file" id="photo2" accept="image/*">
-        </div>
+        <label class="photo-slot-area" id="slot2" for="photo2">
+          <span class="photo-slot-empty" id="empty2">+</span>
+        </label>
+        <input type="file" id="photo2" accept="image/*" style="display:none;">
       </div>
     </div>
   </div>
@@ -327,36 +327,29 @@ document.getElementById('diaryDate').addEventListener('change', function() {
 
 // 사진 3칸
 [0,1,2].forEach(function(i) {
-  document.getElementById('slot' + i).addEventListener('click', function() {
-    document.getElementById('photo' + i).click();
-  });
-
   document.getElementById('photo' + i).addEventListener('change', function() {
     var file = this.files[0];
     if(!file) return;
-    // 같은 파일도 다시 선택 가능하게
     this.value = '';
     fileToBase64(file).then(function(b64) {
       photoBase64List[i] = b64;
       var slot = document.getElementById('slot' + i);
       slot.classList.add('filled');
-      // 기존 img/badge 제거 후 새로 추가
+      var empty = document.getElementById('empty' + i);
+      if(empty) empty.style.display = 'none';
       var oldImg = slot.querySelector('img');
       var oldBadge = slot.querySelector('.change-badge');
-      var oldEmpty = slot.querySelector('.photo-slot-empty');
-      if(oldImg) slot.removeChild(oldImg);
-      if(oldBadge) slot.removeChild(oldBadge);
-      if(oldEmpty) slot.removeChild(oldEmpty);
+      if(oldImg) oldImg.remove();
+      if(oldBadge) oldBadge.remove();
       var img = document.createElement('img');
       img.src = b64;
-      img.style.cssText = 'width:100%;height:100%;object-fit:cover;display:block;position:absolute;top:0;left:0;';
+      img.style.cssText = 'width:100%;height:100%;object-fit:cover;position:absolute;top:0;left:0;pointer-events:none;';
       slot.appendChild(img);
       var badge = document.createElement('div');
       badge.className = 'change-badge';
       badge.textContent = '사진 변경 ✎';
       badge.style.cssText = 'position:absolute;bottom:6px;left:50%;transform:translateX(-50%);background:rgba(0,0,0,.55);color:#fff;font-size:11px;font-weight:700;padding:4px 10px;border-radius:8px;white-space:nowrap;pointer-events:none;';
       slot.appendChild(badge);
-      slot.style.position = 'relative';
       if(i === 0) tryExtractDate(file);
     });
   });
