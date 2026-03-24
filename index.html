@@ -253,8 +253,8 @@ box-shadow:0 4px 16px rgba(74,140,122,.3);
     </div>
     <div class="divider">선택사항</div>
     <div class="form-group">
-      <label class="form-label">빼고 싶은 순간이 있나요?</label>
-      <textarea class="form-input" id="diaryExclude" placeholder="예: 아이가 울었던 순간, 지저분했던 장면"></textarea>
+      <label class="form-label">아이에게 해줄 말이 있나요? <span style="color:var(--text-muted);font-weight:400">(선택)</span></label>
+      <textarea class="form-input" id="diaryExclude" placeholder="예: 오늘 정말 잘 걸었어. 많이 컸구나 😊"></textarea>
     </div>
   </div>
 
@@ -426,13 +426,13 @@ document.getElementById('generateBtn').addEventListener('click', function() {
   var place = document.getElementById('diaryPlace').value;
   if(!place) { alert('장소를 입력해주세요!'); return; }
   var date = document.getElementById('diaryDate').value;
-  var exclude = document.getElementById('diaryExclude').value;
 
   document.getElementById('loadingOverlay').classList.add('show');
   document.getElementById('generateBtn').disabled = true;
 
   var childName = document.getElementById('childName').value || '아이';
   var writer = selectedWriter || document.getElementById('writerCustomInput').value || '부모';
+  var message = document.getElementById('diaryExclude').value;
 
   var prompt = '아이와 함께한 하루를 육아일기로 써줘.\n\n' +
     '날짜: ' + (date || '미입력') + '\n' +
@@ -440,11 +440,12 @@ document.getElementById('generateBtn').addEventListener('click', function() {
     '일기 쓰는 사람: ' + writer + '\n' +
     '장소: ' + (place || '미입력') + '\n' +
     '톤: ' + selectedTones.join(', ') + '\n' +
-    (exclude ? '빼고 싶은 것: ' + exclude + '\n' : '') +
+    (message ? '아이에게 해줄 말: ' + message + '\n' : '') +
     '\n사진은 순서대로 [하루의 첫 페이지, 가장 빛났던 순간, 하루를 마치며] 순간이야.\n' +
     '각 사진의 아이 표정, 행동, 분위기를 묘사하고 스토리라인으로 연결해줘.\n' +
     writer + '가 ' + childName + '에게 그날을 추억하며 들려주는 이야기 형식으로 써줘.\n' +
     '예: "' + childName + '야, ' + writer + '는 오늘 ' + childName + '와 함께해서 너무 행복했어!" 같은 말투로.\n' +
+    (message ? '일기 마지막에 아이에게 해줄 말도 자연스럽게 녹여줘: "' + message + '"\n' : '') +
     selectedTones.join(', ') + ' 톤으로 400자 내외로 써줘.\n' +
     '감동적인 제목도 붙여줘.\n마지막에 오늘 하루를 한 문장으로 요약해줘.';
 
