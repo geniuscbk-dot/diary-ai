@@ -126,10 +126,20 @@ box-shadow:0 4px 16px rgba(74,140,122,.3);
 .result-section.show{display:block;animation:fadeUp .4s ease;}
 @keyframes fadeUp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
 .result-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;padding-bottom:12px;border-bottom:1px solid var(–border);}
-.result-title{font-family:‘Gowun Batang’,serif;font-size:14px;color:var(–mint-deep);}
-.copy-btn{padding:5px 12px;border-radius:6px;border:1px solid var(–mint-soft);background:var(–mint-pale);color:var(–mint-deep);font-size:11px;font-weight:700;cursor:pointer;font-family:‘Noto Sans KR’,sans-serif;}
-.result-text{font-family:‘Gowun Batang’,serif;font-size:15px;line-height:2;color:var(–text);white-space:pre-wrap;}
-.result-date{font-size:11px;color:var(–text-muted);margin-top:14px;text-align:right;font-style:italic;}
+.result-title{font-family:‘Gowun Batang’,serif;font-size:14px;color:#4a8c7a;}
+.copy-btn{padding:5px 12px;border-radius:6px;border:1px solid #c8e4de;background:#e2f2ee;color:#4a8c7a;font-size:11px;font-weight:700;cursor:pointer;font-family:‘Noto Sans KR’,sans-serif;}
+
+/* 사진 카드 */
+.diary-card{background:#fff;border-radius:16px;overflow:hidden;border:1px solid #e8e3db;margin-bottom:14px;box-shadow:0 2px 12px rgba(0,0,0,.06);}
+.diary-photos{display:grid;grid-template-columns:repeat(3,1fr);gap:2px;}
+.diary-photo{aspect-ratio:1;overflow:hidden;}
+.diary-photo img{width:100%;height:100%;object-fit:cover;display:block;}
+.diary-photo-empty{width:100%;height:100%;background:#f5f5f5;display:flex;align-items:center;justify-content:center;font-size:20px;color:#ccc;}
+.diary-card-body{padding:16px;}
+.diary-card-date{font-size:11px;color:#7a9a92;margin-bottom:8px;}
+.diary-card-text{font-family:‘Gowun Batang’,serif;font-size:14px;line-height:1.9;color:#1a1a1a;white-space:pre-wrap;}
+.diary-card-footer{padding:10px 16px;border-top:1px solid #f0f0f0;display:flex;justify-content:flex-end;}
+.diary-card-tag{font-size:10px;color:#7ab5a5;font-weight:700;}
 
 /* 로딩 */
 .loading-overlay{display:none;position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(247,244,239,.92);backdrop-filter:blur(4px);z-index:100;flex-direction:column;align-items:center;justify-content:center;gap:16px;}
@@ -258,8 +268,16 @@ box-shadow:0 4px 16px rgba(74,140,122,.3);
         <button type="button" class="copy-btn" id="shareBtn" style="background:#4a8c7a;color:#fff;border-color:#4a8c7a;">공유</button>
       </div>
     </div>
-    <div class="result-text" id="resultText"></div>
-    <div class="result-date" id="resultDate"></div>
+    <div class="diary-card" id="diaryCard">
+      <div class="diary-photos" id="diaryPhotos"></div>
+      <div class="diary-card-body">
+        <div class="diary-card-date" id="resultDate"></div>
+        <div class="diary-card-text" id="resultText"></div>
+      </div>
+      <div class="diary-card-footer">
+        <span class="diary-card-tag">육아일기 A.I. by 조병근</span>
+      </div>
+    </div>
   </div>
 </div>
 
@@ -430,7 +448,24 @@ document.getElementById('generateBtn').addEventListener('click', function() {
   .then(function(data) {
     var diary = data.diary || data.error || "일기 생성에 실패했습니다.";
     document.getElementById('resultText').textContent = diary;
-    document.getElementById('resultDate').textContent = (date || '').replace(/-/g, '.') + ' 기록';
+    document.getElementById('resultDate').textContent = (date || '').replace(/-/g, '.') + '  |  ' + (childName) + ' · ' + writer;
+
+    // 사진 카드에 넣기
+    var photosEl = document.getElementById('diaryPhotos');
+    photosEl.innerHTML = '';
+    photoBase64List.forEach(function(b64) {
+      var div = document.createElement('div');
+      div.className = 'diary-photo';
+      if(b64) {
+        var img = document.createElement('img');
+        img.src = b64;
+        div.appendChild(img);
+      } else {
+        div.innerHTML = '<div class="diary-photo-empty">📷</div>';
+      }
+      photosEl.appendChild(div);
+    });
+
     document.getElementById('resultSection').classList.add('show');
     document.getElementById('resultSection').scrollIntoView({ behavior: 'smooth', block: 'start' });
   })
@@ -446,9 +481,27 @@ document.getElementById('copyBtn').addEventListener('click', function() {
   var text = document.getElementById('resultText').textContent;
   navigator.clipboard.writeText(text).then(function() {
     var btn = document.getElementById('copyBtn');
-    btn.textContent = '✅ 복사됐어요';
-    setTimeout(function() { btn.textContent = '복사하기'; }, 2000);
+    btn.textContent = '✅ 됐어요';
+    setTimeout(function() { btn.textContent = '복사'; }, 2000);
   });
+});
+
+// 공유
+document.getElementById('shareBtn').addEventListener('click', function() {
+  var text = document.getElementById('resultText').textContent;
+  var date = document.getElementById('resultDate').textContent;
+  var childName = document.getElementById('childName').value || '아이';
+  var title = childName + '의 육아일기 — ' + date;
+  if(navigator.share) {
+    navigator.share({ title: title, text: text })
+    .catch(function() {});
+  } else {
+    navigator.clipboard.writeText(text).then(function() {
+      var btn = document.getElementById('shareBtn');
+      btn.textContent = '✅ 복사됐어요';
+      setTimeout(function() { btn.textContent = '공유'; }, 2000);
+    });
+  }
 });
 </script>
 
