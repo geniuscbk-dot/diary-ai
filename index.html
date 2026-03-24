@@ -253,7 +253,10 @@ box-shadow:0 4px 16px rgba(74,140,122,.3);
   <div class="result-section" id="resultSection">
     <div class="result-header">
       <span class="result-title">📖 오늘의 육아일기</span>
-      <button type="button" class="copy-btn" id="copyBtn">복사하기</button>
+      <div style="display:flex;gap:6px;">
+        <button type="button" class="copy-btn" id="copyBtn">복사</button>
+        <button type="button" class="copy-btn" id="shareBtn" style="background:#4a8c7a;color:#fff;border-color:#4a8c7a;">공유</button>
+      </div>
     </div>
     <div class="result-text" id="resultText"></div>
     <div class="result-date" id="resultDate"></div>
