@@ -172,7 +172,7 @@ box-shadow:0 4px 16px rgba(74,140,122,.3);
       <div class="photo-slot">
         <div class="photo-slot-label">오늘의 시작</div>
         <div class="photo-slot-sub">하루의 첫 페이지</div>
-        <div class="photo-slot-area" id="slot0" onclick="document.getElementById('photo0').click()">
+        <div class="photo-slot-area" id="slot0">
           <span class="photo-slot-empty">+</span>
           <input type="file" id="photo0" accept="image/*">
         </div>
@@ -180,7 +180,7 @@ box-shadow:0 4px 16px rgba(74,140,122,.3);
       <div class="photo-slot">
         <div class="photo-slot-label">오늘의 하이라이트</div>
         <div class="photo-slot-sub">가장 빛났던 순간</div>
-        <div class="photo-slot-area" id="slot1" onclick="document.getElementById('photo1').click()">
+        <div class="photo-slot-area" id="slot1">
           <span class="photo-slot-empty">+</span>
           <input type="file" id="photo1" accept="image/*">
         </div>
@@ -188,7 +188,7 @@ box-shadow:0 4px 16px rgba(74,140,122,.3);
       <div class="photo-slot">
         <div class="photo-slot-label">오늘의 마무리</div>
         <div class="photo-slot-sub">하루를 마치며</div>
-        <div class="photo-slot-area" id="slot2" onclick="document.getElementById('photo2').click()">
+        <div class="photo-slot-area" id="slot2">
           <span class="photo-slot-empty">+</span>
           <input type="file" id="photo2" accept="image/*">
         </div>
@@ -327,6 +327,11 @@ document.getElementById('diaryDate').addEventListener('change', function() {
 
 // 사진 3칸
 [0,1,2].forEach(function(i) {
+  // 슬롯 클릭시 파일선택 열기
+  document.getElementById('slot' + i).addEventListener('click', function() {
+    document.getElementById('photo' + i).click();
+  });
+
   document.getElementById('photo' + i).addEventListener('change', function() {
     var file = this.files[0];
     if(!file) return;
@@ -334,7 +339,8 @@ document.getElementById('diaryDate').addEventListener('change', function() {
       photoBase64List[i] = b64;
       var slot = document.getElementById('slot' + i);
       slot.classList.add('filled');
-      slot.innerHTML = '<img src="' + b64 + '">';
+      slot.innerHTML = '<img src="' + b64 + '" style="width:100%;height:100%;object-fit:cover;display:block;"><div style="position:absolute;bottom:4px;right:4px;background:rgba(0,0,0,.4);color:#fff;font-size:9px;padding:2px 5px;border-radius:4px;">변경 ✎</div>';
+      slot.style.position = 'relative';
       if(i === 0) tryExtractDate(file);
     });
   });
