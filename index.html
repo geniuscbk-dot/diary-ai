@@ -327,7 +327,6 @@ document.getElementById('diaryDate').addEventListener('change', function() {
 
 // 사진 3칸
 [0,1,2].forEach(function(i) {
-  // 슬롯 클릭시 파일선택 열기
   document.getElementById('slot' + i).addEventListener('click', function() {
     document.getElementById('photo' + i).click();
   });
@@ -335,11 +334,28 @@ document.getElementById('diaryDate').addEventListener('change', function() {
   document.getElementById('photo' + i).addEventListener('change', function() {
     var file = this.files[0];
     if(!file) return;
+    // 같은 파일도 다시 선택 가능하게
+    this.value = '';
     fileToBase64(file).then(function(b64) {
       photoBase64List[i] = b64;
       var slot = document.getElementById('slot' + i);
       slot.classList.add('filled');
-      slot.innerHTML = '<img src="' + b64 + '" style="width:100%;height:100%;object-fit:cover;display:block;"><div style="position:absolute;bottom:4px;right:4px;background:rgba(0,0,0,.4);color:#fff;font-size:9px;padding:2px 5px;border-radius:4px;">변경 ✎</div>';
+      // 기존 img/badge 제거 후 새로 추가
+      var oldImg = slot.querySelector('img');
+      var oldBadge = slot.querySelector('.change-badge');
+      var oldEmpty = slot.querySelector('.photo-slot-empty');
+      if(oldImg) slot.removeChild(oldImg);
+      if(oldBadge) slot.removeChild(oldBadge);
+      if(oldEmpty) slot.removeChild(oldEmpty);
+      var img = document.createElement('img');
+      img.src = b64;
+      img.style.cssText = 'width:100%;height:100%;object-fit:cover;display:block;position:absolute;top:0;left:0;';
+      slot.appendChild(img);
+      var badge = document.createElement('div');
+      badge.className = 'change-badge';
+      badge.textContent = '사진 변경 ✎';
+      badge.style.cssText = 'position:absolute;bottom:6px;left:50%;transform:translateX(-50%);background:rgba(0,0,0,.55);color:#fff;font-size:11px;font-weight:700;padding:4px 10px;border-radius:8px;white-space:nowrap;pointer-events:none;';
+      slot.appendChild(badge);
       slot.style.position = 'relative';
       if(i === 0) tryExtractDate(file);
     });
